@@ -1,0 +1,199 @@
+import { useEffect, useState } from "react"
+
+const App = () => {
+  const [todo, setTodo] = useState([])
+  const [editingFlage, setEditing] = useState(-1)
+  function addTodo() {
+    console.log("-----Addtodo---")
+
+    let tempTodo = document.getElementById("todoInput").value
+    console.log("tempTodo: " + tempTodo)
+
+    if (tempTodo === "")
+    {
+      alert("Please add your Todos :")
+    }
+
+    else
+    {
+      console.log("addTodos in array")
+      fetch("/addtodo?title=" + tempTodo)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "Success") {
+            setTodo(data.todoList)
+            document.getElementById("todoInput").value = ""
+          }
+          else
+          {
+            alert(data.message)
+          }
+        })
+    }
+    // if (todo.length>0)
+    // {
+    //   addToArray(todo[todo.length-1].id+1,tempTodo,false)
+    // }
+    // else
+    // { 
+    //   addToArray(0,tempTodo,false)
+    // }
+
+  }
+
+  useEffect(() => {
+    console.log("testing")
+    fetch("/getAllTodos")
+      .then((res) => res.json())
+      .then((data) => setTodo(data.todoList))
+  }, [])
+
+  // function mock()
+  // { 
+  //   if (todo.length>0)
+  //   {
+
+  //     addToArray(todo[todo.length-1].id+1,"Todo 1",true)
+  //     addToArray(todo[todo.length-1].id+1,"Todo 2",false)
+  //     addToArray(todo[todo.length-1].id+1,"Todo 3",true)
+  //   }
+  //   else
+  //   {
+  //      addToArray(0,"Todo 1",false)
+  //      addToArray(todo[todo.length-1].id+1,"Todo 2",true)
+  //      addToArray(todo[todo.length-1].id+1,"Todo 3",false)
+  //      addToArray(todo[todo.length-1].id+1,"Todo 4",true)
+  //   }
+  // }
+
+
+  function addToArray(id, text, completed) {
+    // let tempTodoObject = {
+    //   id: id,
+    //   text: text,
+    //   completed: completed
+    // }
+    // todo.push(tempTodoObject)
+    // console.log("After push")
+    // console.log(todo)
+    // setTodo([...todo])
+  }
+
+  function deleteTodo(id)
+  {
+    console.log("--------deletetodo-----")
+    console.log("id: " + id)
+    console.log(todo)
+    let tempTodo = todo.map(element =>
+    {
+      fetch('/deleteTodo?id='+id)
+      .then((res)=>res.json())
+      .then((data)=>
+      {
+        console.log("status",data.status)
+        if(data.status==='Success')
+        {
+          console.log("if condition part")
+          setTodo(data.todoList)
+        }
+        else
+        { 
+          console.log("else condition part")
+          alert(data.message)
+        }
+       
+      })
+
+      return element.id !== id
+    })
+    // console.log(tempTodo)
+    // setTodo([...tempTodo])
+  }
+
+  function checkListener(id) {
+    console.log("----Checklistener--")
+    todo.map(element => {
+      if (element.id === id) {
+        element.completed = !element.completed
+      }
+      return element
+
+    })
+    console.log(todo)
+    setTodo([...todo])
+  }
+
+  function editTodo(id) {
+    console.log("-----------editTodo-----")
+    console.log("id: " + id)
+    setEditing(id)
+
+    console.log(todo)
+    setTodo([...todo])
+
+  }
+
+  function updateTodo() {
+    console.log("-------Update todo-----")
+    console.log("editingFlage: " + editingFlage)
+    let tempTodo = todo.map(element => {
+      if (element.id === editingFlage) {
+        element.text = document.getElementById("editTodo").value
+
+      }
+      return element
+    })
+    setEditing(-1)
+    setTodo([...tempTodo])
+  }
+
+
+  return <div>
+    <h1>To-Do Application</h1>
+    <input type="text" placeholder="Enter todo here" id="todoInput"></input>
+    <button onClick={() => addTodo()}>Add Todo</button>
+    {/* <button onClick={()=>mock()}>Mock</button> */}
+    {
+      todo.map(element => {
+        return <div>
+          {
+            element.completed ?
+              // completed todo
+              <div>
+                <input type="checkbox" onChange={() => checkListener(element.id)} true />
+                <s>{element.title + " "}</s>
+                {/* <button onClick={()=>deleteTodo(element.id)}>Delete</button> */}
+              </div> :
+              //* incompleted todo 
+              (element.id === editingFlage ?
+                <div>
+                  {/* editing frontend */}
+
+                  <input type="checkbox" onChange={() => checkListener(element.id)} ></input>
+                  <input type="text" defaultValue={element.title} placeholder="Update Todo here" id="editTodo" />
+
+                  <button onClick={() => deleteTodo(element.id)} >Delete</button>
+                  <button onClick={() => updateTodo()}>Save Todo</button>
+
+                </div>
+                :
+                //default frontend
+                <div>
+
+
+                  <input type="checkbox" onChange={() => checkListener(element.id)} ></input>
+
+                  {element.title + " "}
+                  <button onClick={() => deleteTodo(element.id)} >Delete</button>
+                  <button onClick={() => editTodo(element.id)}>Edite</button>
+
+                </div>
+              )
+          }
+        </div>
+      })
+    }
+  </div>
+}
+
+export default App;
