@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 const App = () => {
+
   const [todo, setTodo] = useState([])
   const [editingFlage, setEditing] = useState(-1)
   function addTodo() {
@@ -9,13 +10,11 @@ const App = () => {
     let tempTodo = document.getElementById("todoInput").value
     console.log("tempTodo: " + tempTodo)
 
-    if (tempTodo === "")
-    {
+    if (tempTodo === "") {
       alert("Please add your Todos :")
     }
 
-    else
-    {
+    else {
       console.log("addTodos in array")
       fetch("/addtodo?title=" + tempTodo)
         .then((res) => res.json())
@@ -24,8 +23,7 @@ const App = () => {
             setTodo(data.todoList)
             document.getElementById("todoInput").value = ""
           }
-          else
-          {
+          else {
             alert(data.message)
           }
         })
@@ -81,30 +79,27 @@ const App = () => {
 
   function deleteTodo(id)
   {
-    console.log("--------deletetodo-----")
-    console.log("id: " + id)
-    console.log(todo)
-    let tempTodo = todo.map(element =>
+      todo.map(element => 
     {
-      fetch('/deleteTodo?id='+id)
-      .then((res)=>res.json())
-      .then((data)=>
-      {
-        console.log("status",data.status)
-        if(data.status==='Success')
+      fetch('/deleteTodo?id=' + id)
+        .then((res) => res.json())
+        .then((data) =>
         {
-          console.log("if condition part")
-          setTodo(data.todoList)
-        }
-        else
-        { 
-          console.log("else condition part")
-          alert(data.message)
-        }
-       
-      })
+          console.log("befor if condition part",data.status)
 
-      return element.id !== id
+          if (data.status === 'Success')
+          {
+            console.log("if condition part",data.status)
+            setTodo(data.todoList)
+          }
+          else
+          {
+            console.log("else condition part")
+            alert(data.message)
+          }
+
+        })
+       //return tempTodo
     })
     // console.log(tempTodo)
     // setTodo([...tempTodo])
@@ -114,13 +109,26 @@ const App = () => {
     console.log("----Checklistener--")
     todo.map(element => {
       if (element.id === id) {
-        element.completed = !element.completed
+        // element.completed = !element.completed
+        fetch('/compeleteTodo?id=' + element.id + "&status=" + !element.status)
+          .then((res) => res.json())
+          .then((data) =>
+          {
+            // console.log("data", data)
+            if(data.status==="Success")
+            {
+              setTodo([...data.todoList])
+            }
+            else
+            {
+              alert(data.message)
+            }
+          })
       }
       return element
 
     })
-    console.log(todo)
-    setTodo([...todo])
+    // console.log(todo)
   }
 
   function editTodo(id) {
@@ -133,18 +141,34 @@ const App = () => {
 
   }
 
-  function updateTodo() {
+  function updateTodo()
+  {
     console.log("-------Update todo-----")
     console.log("editingFlage: " + editingFlage)
-    let tempTodo = todo.map(element => {
-      if (element.id === editingFlage) {
-        element.text = document.getElementById("editTodo").value
 
+    let tempTodo = todo.map(element =>
+    {
+      if (element.id === editingFlage)
+      {
+        // element.text = document.getElementById("editTodo").value
+        fetch('/editTodo?id='+element.id+"&title="+ document.getElementById("editTodo").value)
+        .then((res)=>res.json())
+        .then((data)=>
+        {
+          // console.log("data",data)
+          if(data.status==="Success")
+          {
+            setEditing(-1)
+            setTodo([...data.todoList])
+          }
+          else
+          {
+            alert(data.message)
+          }
+        })
       }
       return element
     })
-    setEditing(-1)
-    setTodo([...tempTodo])
   }
 
 
@@ -157,7 +181,7 @@ const App = () => {
       todo.map(element => {
         return <div>
           {
-            element.completed ?
+            element.status ?
               // completed todo
               <div>
                 <input type="checkbox" onChange={() => checkListener(element.id)} true />
