@@ -73,8 +73,8 @@
 .check-icon
 {
   height: 20px;
- width: 20px;
- margin-right: 30px;
+  width: 20px;
+  margin-right: 30px;
 }
 
 .delete-edit
@@ -116,4 +116,24 @@
   border: 1px solid rgb(255, 0, 234);
   background: none;
   background: linear-gradient(90deg, rgba(194, 0, 146, 0.479) 0%, rgba(9, 9, 121, 0.377) 35%, rgba(212, 0, 255, 0.288) 100%);
+}
+
+.compelete-todo
+{
+  display:flex;
+}
+
+.compelet-todo-text
+{
+  font-size: 20px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-style: italic;
+}
+
+.compelete-check
+{
+  height: 20px;
+  width: 20px;
+  margin-right: 30px;
+  margin-left: 5px;
 }

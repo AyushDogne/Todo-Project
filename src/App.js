@@ -167,17 +167,19 @@ const App = () => {
       <h1 className="todoHeading">To-Do Application</h1>
       <input type="text" placeholder="Enter todo here" id="todoInput" className="todo-Input"></input>
       <button className="add-icon" onClick={() => addTodo()}> <h4>Add Todo</h4></button>
-      <div>
+
+<h3 style={{margin:"20px"}}>Completed Todo</h3>
+      <div style={{margin:"50px"}}>
         {
           todo.map(element => {
             return <div>
               {
                 element.status ?
-
-                  <div>
-                    <div><s>{element.title + " "}</s></div>
-                    <div><input type="checkbox" onChange={() => checkListener(element.id)} true /></div>
-                  </div> :
+                   
+                  <div className="compelete-todo">
+                    <div className="compelet-todo-text"><s>{element.title + " "}</s></div>
+                    <div><input type="checkbox" onChange={() => checkListener(element.id)} true  className="compelete-check"/></div>
+                  </div>:
                   (element.id === editingFlage ?
                     <div className="last">
                      <div className="after-edit"><input type="text" defaultValue={element.title}  id="editTodo" /></div>
