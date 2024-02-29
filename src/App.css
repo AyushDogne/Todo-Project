@@ -1,38 +1,119 @@
-.App {
+*{
+  margin: 0%;
+  padding: 0%;
+}
+
+.main-body
+{
+  background: linear-gradient(90deg, rgba(194, 0, 145, 0.61) 0%, rgba(9, 9, 121, 0.678) 35%, rgba(212, 0, 255, 0.726) 100%);
+   height: 800px;
+   position: fixed;
+   width: 100%;
+}
+
+.todoHeading
+{
   text-align: center;
+  padding-top: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.todo-Input
+{
+  border: 1px solid rgb(255, 0, 234);
+  height: 29px;
+  width: 300px;  
+  border-radius: 15px;
+  margin-left: 500px;
+  margin-top: 20px;
+}
+.todo-Input::placeholder
+{
+  padding-left:5px;
+  /* background-image:url("../icons/Add-Icon.png"); */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.todo-Input 
+{
+  padding-left: 10px;
+}
+.add-icon
+{
+   height:30px;
+   width: 100px;
+   background: linear-gradient(90deg, rgba(194, 0, 145, 0.61) 0%, rgba(9, 9, 121, 0.288) 35%, rgba(212, 0, 255, 0.726) 100%);
+   border-radius: 10px;
+   margin-left: 10px;
+}
+.add-icon:hover
+{
+  border: 1px solid yellow;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.last
+{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  border:2px solid black;
+  border-radius: 15px;
+  width:900px;
+  height: 30px;
+  justify-content:space-between;
+  margin-top: 10px;
+  margin-left: 200px;
+  align-items:center;
 }
 
-.App-link {
-  color: #61dafb;
+.text-todo
+{
+  padding-left: 20px;
+  font-size: 20px;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-style: italic;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.check-icon
+{
+  height: 20px;
+ width: 20px;
+ margin-right: 30px;
+}
+
+.delete-edit
+{
+  height:25px;
+  width: 50px;
+  margin-right: 20px;
+  border: 1px solid rgb(255, 0, 234);
+  background: none;
+  background: linear-gradient(90deg, rgba(194, 0, 146, 0.479) 0%, rgba(9, 9, 121, 0.377) 35%, rgba(212, 0, 255, 0.288) 100%);
+}
+.after-edit
+{
+  padding-left: 10px;
+}
+.after-edit input
+{
+  border: 2px solid rgb(0, 255, 85);
+  border-radius: 10px;
+  background: none;
+  padding-left: 10px;
+  font-size: 20px;
+  color: yellow; 
+}
+.after-edit-delete
+{
+  height:25px;
+  width: 50px;
+  margin-right: 20px;
+  border: 1px solid rgb(255, 0, 234);
+  background: none;
+  background: linear-gradient(90deg, rgba(194, 0, 146, 0.479) 0%, rgba(9, 9, 121, 0.377) 35%, rgba(212, 0, 255, 0.288) 100%);
+}
+.after-edit-seveTodo
+{
+  height:25px;
+  width: 90px;
+  margin-right: 20px;
+  border: 1px solid rgb(255, 0, 234);
+  background: none;
+  background: linear-gradient(90deg, rgba(194, 0, 146, 0.479) 0%, rgba(9, 9, 121, 0.377) 35%, rgba(212, 0, 255, 0.288) 100%);
 }
