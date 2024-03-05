@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react"
+import "../src/App.css"
+
 
 const App = () => {
+
   const [todo, setTodo] = useState([])
   const [editingFlage, setEditing] = useState(-1)
+
   function addTodo() {
     console.log("-----Addtodo---")
-
     let tempTodo = document.getElementById("todoInput").value
     console.log("tempTodo: " + tempTodo)
 
-    if (tempTodo === "")
-    {
+    if (tempTodo === "") {
       alert("Please add your Todos :")
     }
 
-    else
-    {
+    else {
       console.log("addTodos in array")
       fetch("/addtodo?title=" + tempTodo)
         .then((res) => res.json())
@@ -24,8 +25,7 @@ const App = () => {
             setTodo(data.todoList)
             document.getElementById("todoInput").value = ""
           }
-          else
-          {
+          else {
             alert(data.message)
           }
         })
@@ -35,6 +35,7 @@ const App = () => {
     //   addToArray(todo[todo.length-1].id+1,tempTodo,false)
     // }
     // else
+    
     // { 
     //   addToArray(0,tempTodo,false)
     // }
@@ -79,32 +80,25 @@ const App = () => {
     // setTodo([...todo])
   }
 
-  function deleteTodo(id)
-  {
-    console.log("--------deletetodo-----")
-    console.log("id: " + id)
-    console.log(todo)
-    let tempTodo = todo.map(element =>
-    {
-      fetch('/deleteTodo?id='+id)
-      .then((res)=>res.json())
-      .then((data)=>
-      {
-        console.log("status",data.status)
-        if(data.status==='Success')
-        {
-          console.log("if condition part")
-          setTodo(data.todoList)
-        }
-        else
-        { 
-          console.log("else condition part")
-          alert(data.message)
-        }
-       
-      })
+  function deleteTodo(id) {
+    todo.map(element => {
+      if (element.id === id) {
+        fetch('/deleteTodo?id=' + id)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("befor if condition part", data.status)
 
-      return element.id !== id
+            if (data.status === 'Success') {
+              console.log("if condition part", data.status)
+              setTodo(data.todoList)
+            }
+            else {
+              console.log("else condition part")
+              alert(data.message)
+            }
+          })
+        return element.id === id
+      }
     })
     // console.log(tempTodo)
     // setTodo([...tempTodo])
@@ -114,13 +108,23 @@ const App = () => {
     console.log("----Checklistener--")
     todo.map(element => {
       if (element.id === id) {
-        element.completed = !element.completed
+        // element.completed = !element.completed
+        fetch('/compeleteTodo?id=' + element.id + "&status=" + !element.status)
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log("data", data)
+            if (data.status === "Success") {
+              setTodo([...data.todoList])
+            }
+            else {
+              alert(data.message)
+            }
+          })
       }
       return element
 
     })
-    console.log(todo)
-    setTodo([...todo])
+    // console.log(todo)
   }
 
   function editTodo(id) {
@@ -136,64 +140,86 @@ const App = () => {
   function updateTodo() {
     console.log("-------Update todo-----")
     console.log("editingFlage: " + editingFlage)
+
     let tempTodo = todo.map(element => {
       if (element.id === editingFlage) {
-        element.text = document.getElementById("editTodo").value
-
+        // element.text = document.getElementById("editTodo").value
+        fetch('/editTodo?id=' + element.id + "&title=" + document.getElementById("editTodo").value)
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log("data",data)
+            if (data.status === "Success") {
+              setEditing(-1)
+              setTodo([...data.todoList])
+            }
+            else {
+              alert(data.message)
+            }
+          })
       }
       return element
     })
-    setEditing(-1)
-    setTodo([...tempTodo])
   }
 
 
-  return <div>
-    <h1>To-Do Application</h1>
-    <input type="text" placeholder="Enter todo here" id="todoInput"></input>
-    <button onClick={() => addTodo()}>Add Todo</button>
-    {/* <button onClick={()=>mock()}>Mock</button> */}
-    {
-      todo.map(element => {
-        return <div>
-          {
-            element.completed ?
-              // completed todo
-              <div>
-                <input type="checkbox" onChange={() => checkListener(element.id)} true />
-                <s>{element.title + " "}</s>
-                {/* <button onClick={()=>deleteTodo(element.id)}>Delete</button> */}
-              </div> :
-              //* incompleted todo 
-              (element.id === editingFlage ?
-                <div>
-                  {/* editing frontend */}
+  return (
+    <div className="main-body">
+      <h1 className="todoHeading">To-Do Application</h1>
+      <input type="text" placeholder="Enter todo here" id="todoInput" className="todo-Input"></input>
+      <button className="add-icon" onClick={() => addTodo()}> <h4>Add Todo</h4></button>
 
-                  <input type="checkbox" onChange={() => checkListener(element.id)} ></input>
-                  <input type="text" defaultValue={element.title} placeholder="Update Todo here" id="editTodo" />
+<h3 style={{margin:"20px"}}>Completed Todo</h3>
+      <div style={{margin:"50px"}}>
+        {
+          todo.map(element => {
+            return <div>
+              {
+                element.status ?
+                   
+                  <div className="compelete-todo">
+                    <div className="compelet-todo-text"><s>{element.title + " "}</s></div>
+                    <div><input type="checkbox" onChange={() => checkListener(element.id)} true  className="compelete-check"/></div>
+                  </div>:
+                  (element.id === editingFlage ?
+                    <div className="last">
+                     <div className="after-edit"><input type="text" defaultValue={element.title}  id="editTodo" /></div>
+                     <div>
+                       {/* <input type="checkbox" onChange={() => checkListener(element.id)} ></input> */}
+                      <button onClick={() => deleteTodo(element.id)} className="after-edit-delete" >Delete</button>
+                      <button onClick={() => updateTodo()} className="after-edit-seveTodo">Save Todo</button></div>
+                    </div>
+                    :   
+                    <div className="last"> 
+                      <div className="text-todo"> {element.title + " "}</div>                    
+                      <div>                   
+                        <input type="checkbox" onChange={() => checkListener(element.id)} className="check-icon" ></input>
+                        <button onClick={() => deleteTodo(element.id)} className="delete-edit" >Delete</button>
+                        <button onClick={() => editTodo(element.id)} className="delete-edit">Edite</button>
+                      </div>
+                    </div>
+                  )
 
-                  <button onClick={() => deleteTodo(element.id)} >Delete</button>
-                  <button onClick={() => updateTodo()}>Save Todo</button>
-
-                </div>
-                :
-                //default frontend
-                <div>
-
-
-                  <input type="checkbox" onChange={() => checkListener(element.id)} ></input>
-
-                  {element.title + " "}
-                  <button onClick={() => deleteTodo(element.id)} >Delete</button>
-                  <button onClick={() => editTodo(element.id)}>Edite</button>
-
-                </div>
-              )
-          }
-        </div>
-      })
-    }
-  </div>
+              }
+            </div>
+          })
+        }
+      </div>
+    </div>
+  )
 }
-
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+//react aartitacture
+//mvc
+//mvvm
+//icons8.com
