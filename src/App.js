@@ -9,40 +9,40 @@ const App = () =>
   const [todo, setTodo] = useState([])
   const [editingFlage, setEditing] = useState(-1)
 
-  // function addTodo() {
-  //   console.log("-----Addtodo---")
-  //   let tempTodo = document.getElementById("todoInput").value
-  //   console.log("tempTodo: " + tempTodo)
+  function addTodo() {
+    console.log("-----Addtodo---")
+    let tempTodo = document.getElementById("todoInput").value
+    console.log("tempTodo: " + tempTodo)
 
-  //   if (tempTodo === "") {
-  //     alert("Please add your Todos :")
-  //   }
+    if (tempTodo === "") {
+      alert("Please add your Todos :")
+    }
 
-  //   else {
-  //     console.log("addTodos in array")
-  //     fetch("/addtodo?title=" + tempTodo)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data.status === "Success") {
-  //           setTodo(data.todoList)
-  //           document.getElementById("todoInput").value = ""
-  //         }
-  //         else {
-  //           alert(data.message)
-  //         }
-  //       })
-  //   }
-  //   // if (todo.length>0)
-  //   // {
-  //   //   addToArray(todo[todo.length-1].id+1,tempTodo,false)
-  //   // }
-  //   // else
+    else {
+      console.log("addTodos in array")
+      fetch("/addtodo?title=" + tempTodo)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "Success") {
+            setTodo(data.todoList)
+            document.getElementById("todoInput").value = ""
+          }
+          else {
+            alert(data.message)
+          }
+        })
+    }
+    // if (todo.length>0)
+    // {
+    //   addToArray(todo[todo.length-1].id+1,tempTodo,false)
+    // }
+    // else
 
-  //   // { 
-  //   //   addToArray(0,tempTodo,false)
-  //   // }
+    // { 
+    //   addToArray(0,tempTodo,false)
+    // }
 
-  // }
+  }
 
   useEffect(() => {
     console.log("testing")
@@ -161,21 +161,10 @@ const App = () =>
     })
   }
 
-  
-
   return (
     <div className="main-body">
       <h1 className="todoHeading">To-Do Application</h1>
-      {/* <input type="text" placeholder="Enter todo here" id="todoInput" className="todo-Input"></input>
-      <button className="add-Todo-Button" onClick={() => addTodo()}> <h4>Add Todo</h4></button> */}
-
-      {/* <button className="app-popus" onClick={()=>Dialogbox()}> <h4>Add Todo</h4></button> */}
-
-        <Dialogbox/>
-
-
-      {/* <h3 style={{margin:"20px"}}>Completed Todo</h3> */}
-
+        <Dialogbox addFunction={()=>addTodo()}/>
       <div style={{ margin: "50px" }}>
         {
           todo.map(element => {
