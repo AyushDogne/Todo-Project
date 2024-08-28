@@ -15,7 +15,7 @@
 
 .main-body
 {
-  background: linear-gradient(90deg, rgba(194, 0, 145, 0.61) 0%, rgba(9, 9, 121, 0.678) 35%, rgba(212, 0, 255, 0.726) 100%);
+  background-color: black;
    height: 800px;
    position: fixed;
    width: 100%;
@@ -23,6 +23,7 @@
 
 .todoHeading
 {
+  color:whitesmoke;
   text-align: center;
   padding-top: 20px;
   font-size: 40px;
@@ -144,7 +145,7 @@
   height: 30px;
   width:120px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.671);
+  background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
   font-size: large;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -153,5 +154,6 @@
 
 .btn-Added:hover
 {
-  border-color: chartreuse;
+  border-color: rgb(255, 0, 0);
+  border-radius: 10%; 
 }
